@@ -20,6 +20,7 @@ import zmq.util.Z85;
 public class Options
 {
     //  High-water marks for message pipes.
+    //  消息管道的高水位标记。
     public int sendHwm;
     public int recvHwm;
 

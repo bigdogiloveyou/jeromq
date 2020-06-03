@@ -14,6 +14,7 @@ public final class Mailbox implements IMailbox
     private final YPipe<Command> cpipe;
 
     //  Signaler to pass signals from writer thread to reader thread.
+    //  将信号从写线程传递到读线程
     private final Signaler signaler;
 
     //  There's only one thread receiving from the mailbox, but there

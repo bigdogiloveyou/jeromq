@@ -14,12 +14,15 @@ import zmq.poll.Poller;
 public class IOThread extends ZObject implements IPollEvents, Closeable
 {
     //  I/O thread accesses incoming commands via this mailbox.
+    //  I/O 线程通过此邮箱访问传入的命令。
     private final Mailbox mailbox;
 
     //  Handle associated with mailbox' file descriptor.
+    //  与邮箱的文件描述符关联的句柄。
     private final Poller.Handle mailboxHandle;
 
     //  I/O multiplexing is performed using a poller object.
+    //  使用轮询器对象执行 I/O 复用。
     private final Poller poller;
 
     private final String name;

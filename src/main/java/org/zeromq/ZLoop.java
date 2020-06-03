@@ -15,6 +15,10 @@ import zmq.util.Objects;
  * handles zmq.PollItem items (pollers or writers, sockets or fds), and
  * once-off or repeated timers. Its resolution is 1 msec. It uses a tickless
  * timer to reduce CPU interrupts in inactive processes.
+ *
+ * ZLoop类提供事件驱动的反应堆模式。
+ * 反应器处理zmq.PollItem项目（轮询器或写入器，套接字或fds）以及一次性计时器或重复计时器。
+ * 其分辨率为1毫秒。 它使用无滴答计时器来减少非活动进程中的CPU中断。
  */
 
 public class ZLoop

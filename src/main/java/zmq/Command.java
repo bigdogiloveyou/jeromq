@@ -1,6 +1,7 @@
 package zmq;
 
 //  This structure defines the commands that can be sent between threads.
+//  该结构定义了可以在线程之间发送的命令。
 public class Command
 {
     //  Object to process the command.
@@ -10,12 +11,13 @@ public class Command
 
     public enum Type
     {
-        //  Sent to I/O thread to let it know that it should
-        //  terminate itself.
+        //  Sent to I/O thread to let it know that it should terminate itself.
         STOP,
         //  Sent to I/O object to make it register with its I/O thread
+        //  发送到 I/O 对象以使其在其 I/O 线程中注册
         PLUG,
         //  Sent to socket to let it know about the newly created object.
+        //  发送到 socket 以使其了解新创建的对象。
         OWN,
         //  Attach the engine to the session. If engine is NULL, it informs
         //  session that the connection have failed.

@@ -62,6 +62,7 @@ abstract class PollerBase implements Runnable
     private final MultiMap<Long, TimerInfo> timers;
 
     // the thread where all events will be dispatched. So, the actual IO or Reaper threads.
+    // 将调度所有事件的线程。 因此，实际的IO或Reaper线程。
     protected final Thread worker;
 
     // did timers expiration add timer ?

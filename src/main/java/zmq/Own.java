@@ -9,6 +9,7 @@ import zmq.util.Errno;
 
 //  Base class for objects forming a part of ownership hierarchy.
 //  It handles initialization and destruction of such objects.
+//  构成所有权层次结构一部分的对象的基类。 它处理此类对象的初始化和销毁。
 public abstract class Own extends ZObject
 {
     protected final Options options;

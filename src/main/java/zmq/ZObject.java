@@ -6,14 +6,16 @@ import zmq.io.SessionBase;
 import zmq.pipe.Pipe;
 import zmq.pipe.YPipeBase;
 
-//  Base class for all objects that participate in inter-thread
-//  communication.
+//  Base class for all objects that participate in inter-thread communication.
+//  参与线程间通信的所有对象的基类。
 public abstract class ZObject
 {
     //  Context provides access to the global state.
+    //  上下文提供对全局状态的访问。
     private final Ctx ctx;
 
     //  Thread ID of the thread the object belongs to.
+    //  对象所属线程的线程ID。
     private int tid;
 
     protected ZObject(Ctx ctx, int tid)

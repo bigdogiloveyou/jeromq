@@ -8,6 +8,7 @@ import zmq.util.Blob;
 //  Note that pipe can be stored in three different arrays.
 //  The array of inbound pipes (1), the array of outbound pipes (2) and
 //  the generic array of pipes to deallocate (3).
+//  请注意，管道可以存储在三个不同的数组中。 入站管道数组（1），出站管道数组（2）和要取消分配的常规管道数组（3）。
 public class Pipe extends ZObject
 {
     public interface IPipeEvents

@@ -24,9 +24,8 @@ import zmq.socket.Sockets;
 import zmq.util.Errno;
 import zmq.util.MultiMap;
 
-//Context object encapsulates all the global state associated with
-//  the library.
-
+//  Context object encapsulates all the global state associated with the library.
+//  上下文对象封装了与库关联的所有全局状态。
 public class Ctx
 {
     private static final int WAIT_FOREVER = -1;
@@ -34,7 +33,7 @@ public class Ctx
     //  Information associated with inproc endpoint. Note that endpoint options
     //  are registered as well so that the peer can access them without a need
     //  for synchronization, handshaking or similar.
-
+    //  与inproc端点关联的信息。 请注意，还注册了端点选项，以便对等方可以访问它们而无需同步，握手或类似操作。
     public static class Endpoint
     {
         public final SocketBase socket;
@@ -48,6 +47,7 @@ public class Ctx
 
     }
 
+    // PendingConnection 意为：待处理的连接
     private static class PendingConnection
     {
         private final Endpoint endpoint;
@@ -75,9 +75,11 @@ public class Ctx
     //  Sockets belonging to this context. We need the list so that
     //  we can notify the sockets when zmq_term() is called. The sockets
     //  will return ETERM then.
+    //  属于此上下文的套接字。 我们需要该列表，以便在调用zmq_term（）时可以通知套接字。 然后，套接字将返回ETERM。
     private final List<SocketBase> sockets;
 
     //  List of unused thread slots.
+    //  未使用的线程槽列表。
     private final Deque<Integer> emptySlots;
 
     //  If true, init has been called but no socket has been created
@@ -96,6 +98,7 @@ public class Ctx
     // A list of poll selectors opened under this context. When the context is
     // destroyed, each of the selectors is closed to ensure resource
     // deallocation.
+    // 在此上下文下打开的轮询选择器列表。 当上下文销毁时，关闭每个选择器以确保资源释放。
     private final List<Selector> selectors = new ArrayList<>();
 
     //  The reaper thread.
@@ -443,7 +446,7 @@ public class Ctx
             //  Create the reaper thread.
             reaper = new Reaper(this, REAPER_TID);
             slots[REAPER_TID] = reaper.getMailbox();
-            reaper.start();
+            reaper.start(); // 启动线程
 
             //  Create I/O thread objects and launch them.
             for (int i = 2; i != ios + 2; i++) {

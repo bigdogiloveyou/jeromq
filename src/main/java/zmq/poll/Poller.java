@@ -16,6 +16,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import zmq.Ctx;
 import zmq.ZError;
 
+
+/**
+ * 看来看去就这一个类实现了 run 方法，应该是这个类里面的线程来读取接受数据。
+ */
 public final class Poller extends PollerBase implements Runnable
 {
     // opaque class to mimic libzmq behaviour.
