@@ -9,6 +9,8 @@ import zmq.poll.Poller.Handle;
 //  Simple base class for objects that live in I/O threads.
 //  It makes communication with the poller object easier and
 //  makes defining unneeded event handlers unnecessary.
+//  I/O 线程中存在的对象的简单基类。
+//  它使与轮询器对象的通信变得更加容易，并且不需要定义不需要的事件处理程序。
 public class IOObject implements IPollEvents
 {
     private final Poller      poller;

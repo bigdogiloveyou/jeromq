@@ -28,6 +28,9 @@ public enum Config
     //  So, if there are 10 messages that fit into the batch size, all of
     //  them may be written by a single 'send' system call, thus avoiding
     //  unnecessary network stack traversals.
+    //  具有发送功能的引擎的最大批处理大小。
+    //  因此，如果有10条适合批量大小的消息，则所有这些消息都可以通过一个“发送”系统调用来编写，
+    //  从而避免了不必要的网络堆栈遍历。
     OUT_BATCH_SIZE(8192),
 
     //  Maximal delta between high and low watermark.

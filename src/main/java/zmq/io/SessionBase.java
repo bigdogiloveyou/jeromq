@@ -29,19 +29,24 @@ public class SessionBase extends Own implements Pipe.IPipeEvents, IPollEvents
 {
     //  If true, this session (re)connects to the peer. Otherwise, it's
     //  a transient session created by the listener.
+    //  如果为true，则此会话（重新）连接到对等方。 否则，它是由侦听器创建的临时会话。
     private final boolean active;
 
     //  Pipe connecting the session to its socket.
+    //  将 session 连接到 socket 的管道
     private Pipe pipe;
 
     //  Pipe used to exchange messages with ZAP socket.
+    //  与 ZAP 交换信息的管道
     private Pipe zapPipe;
 
     //  This set is added to with pipes we are disconnecting, but haven't yet completed
+    //  放入失去连接且没有完成的 Pipe
     private final Set<Pipe> terminatingPipes;
 
     //  This flag is true if the remainder of the message being processed
     //  is still in the in pipe.
+    //  如果正在处理的消息的其余部分仍在入管道中，则此标志为true。
     private boolean incompleteIn;
 
     //  True if termination have been suspended to push the pending
@@ -49,6 +54,7 @@ public class SessionBase extends Own implements Pipe.IPipeEvents, IPollEvents
     private boolean pending;
 
     //  The protocol I/O engine connected to the session.
+    //  连接到 session 的 I/O 引擎
     private IEngine engine;
 
     //  The socket the session belongs to.
@@ -56,6 +62,7 @@ public class SessionBase extends Own implements Pipe.IPipeEvents, IPollEvents
 
     //  I/O thread the session is living in. It will be used to plug in
     //  the engines into the same thread.
+    //  会话所在的I / O线程。它将用于将引擎插入同一线程。
     private final IOThread ioThread;
 
     //  ID of the linger timer
@@ -503,6 +510,7 @@ public class SessionBase extends Own implements Pipe.IPipeEvents, IPollEvents
 
         //  Choose I/O thread to run connecter in. Given that we are already
         //  running in an I/O thread, there must be at least one available.
+        //  选择I / O线程以运行连接器。鉴于我们已经在I / O线程中运行，因此必须至少有一个可用线程。
         IOThread ioThread = chooseIoThread(options.affinity);
         assert (ioThread != null);
 

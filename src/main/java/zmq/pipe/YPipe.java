@@ -41,6 +41,7 @@ public class YPipe<T> implements YPipeBase<T>
     //  set to true the item is assumed to be continued by items
     //  subsequently written to the pipe. Incomplete items are never
     //  flushed down the stream.
+    //  将项目写入管道。 不要冲洗它。 如果未完成设置为true，则假定该项目由随后写入管道的项目继续。 不完整的项目永远不会冲洗掉。
     @Override
     public void write(final T value, boolean incomplete)
     {

@@ -4,6 +4,7 @@ public interface IPollEvents
 {
     /**
      * Called by I/O thread when file descriptor is ready for reading.
+     * 准备读取文件描述符时，由I / O线程调用。
      */
     default void inEvent()
     {

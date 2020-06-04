@@ -97,6 +97,9 @@ public class Req extends Dealer
             //   REQ sends request to A, A replies, B replies too.
             //   A's reply was first and matches, that is used.
             //   An hour later REQ sends a request to B. B's old reply is used.
+            //  在完全发送请求之前，先吃掉所有当前可用的消息。
+            //  这样做是为了避免：REQ向A发送请求，A答复，B也答复。
+            //  首先使用A的答复并匹配，一个小时后，REQ向B发送请求。使用B的旧答复。
             while (true) {
                 Msg drop = super.xrecv();
                 if (drop == null) {

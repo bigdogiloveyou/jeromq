@@ -56,6 +56,7 @@ public abstract class SocketBase extends Own implements IPollEvents, Pipe.IPipeE
     private boolean active;
 
     //  If true, associated context was already terminated.
+    //  如果为true，则关联上下文已终止。
     private boolean ctxTerminated;
 
     //  If true, object should have been already destroyed. However,
@@ -794,6 +795,7 @@ public abstract class SocketBase extends Own implements IPollEvents, Pipe.IPipeE
             }
 
             //  Process pending commands, if any.
+            //  处理待发送的命令
             boolean brc = processCommands(0, true);
             if (!brc) {
                 return false;
@@ -1039,11 +1041,14 @@ public abstract class SocketBase extends Own implements IPollEvents, Pipe.IPipeE
     //  returns only after at least one command was processed.
     //  If throttle argument is true, commands are processed at most once
     //  in a predefined time period.
+    //  处理发送到此套接字的命令（如果有）。 如果超时为-1，则仅在处理了至少一个命令后才返回。
+    //  如果节流参数为true，则命令在预定义的时间段内最多处理一次。
     private boolean processCommands(int timeout, boolean throttle)
     {
         Command cmd;
         if (timeout != 0) {
             //  If we are asked to wait, simply ask mailbox to wait.
+            //  如果要求我们等待，只需让邮箱等待。
             cmd = mailbox.recv(timeout);
         }
         else {
@@ -1051,6 +1056,8 @@ public abstract class SocketBase extends Own implements IPollEvents, Pipe.IPipeE
             //  commands recently, so that we can throttle the new commands.
 
             //  Get the CPU's tick counter. If 0, the counter is not available.
+            //  如果要求我们不等待，请检查我们最近是否未处理命令，以便我们可以限制新命令。
+            //  获取CPU的滴答计数器。 如果为0，则计数器不可用。
             long tsc = 0; // Clock.rdtsc();
 
             //  Optimized version of command processing - it doesn't have to check
@@ -1059,10 +1066,14 @@ public abstract class SocketBase extends Own implements IPollEvents, Pipe.IPipeE
             //  depending on CPU speed: It's ~1ms on 3GHz CPU, ~2ms on 1.5GHz CPU
             //  etc. The optimization makes sense only on platforms where getting
             //  a timestamp is a very cheap operation (tens of nanoseconds).
+            //  优化的命令处理版本-不必每次都检查传入的命令。 仅在自上次命令处理以来经过了一定时间后才这样做。
+            //  命令延迟因CPU速度而异：在3GHz CPU上约为1ms，在1.5GHz CPU上约为2ms，等等。
+            //  该优化仅在获得时间戳非常便宜（数十纳秒）的平台上才有意义。
             if (tsc != 0 && throttle) {
                 //  Check whether TSC haven't jumped backwards (in case of migration
                 //  between CPU cores) and whether certain time have elapsed since
                 //  last command processing. If it didn't do nothing.
+                //  检查TSC是否没有向后跳（在CPU内核之间迁移的情况下）以及自上一次命令处理以来是否已经过去了一定的时间。 如果它什么都不做。
                 if (tsc >= lastTsc && tsc - lastTsc <= Config.MAX_COMMAND_DELAY.getValue()) {
                     return true;
                 }
@@ -1070,6 +1081,7 @@ public abstract class SocketBase extends Own implements IPollEvents, Pipe.IPipeE
             }
 
             //  Check whether there are any commands pending for this thread.
+            //  检查该线程是否有任何待处理的命令。
             cmd = mailbox.recv(0);
         }
 

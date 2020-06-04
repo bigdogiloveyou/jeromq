@@ -18,9 +18,12 @@ import zmq.util.Utils;
 //  to signal_fd there can be at most one signal in the signaler at any
 //  given moment. Attempt to send a signal before receiving the previous
 //  one will result in undefined behaviour.
+//  这是等效于signal_fd的跨平台。 但是，与signal_fd相反，在任何给定时刻，信号器中最多可以有一个信号。
+//  尝试在接收前一个信号之前发送信号将导致不确定的行为。
 final class Signaler implements Closeable
 {
     //  Underlying write & read file descriptor.
+    //  底层的读写文件描述符。
     private final Pipe.SinkChannel   w;
     private final Pipe.SourceChannel r;
     private final Selector           selector;
@@ -28,6 +31,7 @@ final class Signaler implements Closeable
     private final ByteBuffer         rdummy = ByteBuffer.allocate(1);
 
     // Selector.selectNow at every sending message doesn't show enough performance
+    // 每条发送消息中的Selector.selectNow均未显示足够的性能
     private final AtomicLong wcursor = new AtomicLong(0);
     private long             rcursor = 0;
 
@@ -49,6 +53,7 @@ final class Signaler implements Closeable
             w = pipe.sink();
 
             //  Set both fds to non-blocking mode.
+            //  将两个 fds 都设置成 non-blocking
             Utils.unblockSocket(w, r);
 
             selector = ctx.createSelector();
@@ -88,6 +93,9 @@ final class Signaler implements Closeable
         return r;
     }
 
+    /**
+     * 发送数据，但是 wdummy 为何是1。好像是假的发送
+     */
     void send()
     {
         int nbytes;
@@ -121,6 +129,7 @@ final class Signaler implements Closeable
                 // waitEvent(0) is called every read/send of SocketBase
                 // instant readiness is not strictly required
                 // On the other hand, we can save lots of system call and increase performance
+                // 并非每次都需要SocketBase的每次读/发送时都调用waitEvent（0），另一方面，我们可以节省大量系统调用并提高性能
                 errno.set(ZError.EAGAIN);
                 return false;
 
@@ -159,6 +168,7 @@ final class Signaler implements Closeable
     {
         int nbytes = 0;
         // On windows, there may be a need to try several times until it succeeds
+        // 在Windows上，可能需要尝试几次直到成功
         while (nbytes == 0) {
             try {
                 rdummy.clear();

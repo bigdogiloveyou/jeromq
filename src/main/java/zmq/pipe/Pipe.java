@@ -42,6 +42,7 @@ public class Pipe extends ZObject
 
     //  Last received peer's msgsRead. The actual number in the peer
     //  can be higher at the moment.
+    //  上次收到的对等方的msgsRead。目前，对等方中的实际数字可能会更高。
     private long peersMsgsRead;
 
     //  The pipe object on the other side of the pipepair.
@@ -331,6 +332,7 @@ public class Pipe extends ZObject
     protected void processActivateWrite(long msgsRead)
     {
         //  Remember the peers's message sequence number.
+        //  记住对等方的消息序列号。
         peersMsgsRead = msgsRead;
 
         if (!outActive && state == State.ACTIVE) {

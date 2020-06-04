@@ -11,6 +11,7 @@ import zmq.util.Errno;
 public final class Mailbox implements IMailbox
 {
     //  The pipe to store actual commands.
+    //  用于存储实际命令的管道。
     private final YPipe<Command> cpipe;
 
     //  Signaler to pass signals from writer thread to reader thread.

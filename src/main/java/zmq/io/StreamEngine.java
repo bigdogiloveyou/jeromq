@@ -36,6 +36,7 @@ import zmq.util.function.Supplier;
 
 // This engine handles any socket with SOCK_STREAM semantics,
 // e.g. TCP socket or an UNIX domain socket.
+// 该引擎处理任何具有 SOCK_STREAM 语义的套接字，例如 TCP 套接字或 UNIX 域套接字。
 public class StreamEngine implements IEngine, IPollEvents
 {
     private final class ProducePongMessage implements Supplier<Msg>
@@ -103,6 +104,8 @@ public class StreamEngine implements IEngine, IPollEvents
     //  When true, we are still trying to determine whether
     //  the peer is using versioned protocol, and if so, which
     //  version.  When false, normal message flow has started.
+    //  如果为true，我们仍在尝试确定对等方是否使用版本协议，如果使用版本协议，则使用哪个版本。
+    //  如果为false，则正常的消息流已经开始。
     private boolean handshaking;
 
     private static final int SIGNATURE_SIZE = 10;
@@ -115,6 +118,7 @@ public class StreamEngine implements IEngine, IPollEvents
     private int greetingSize;
 
     //  Greeting received from, and sent to peer
+    //  接收发送
     private final ByteBuffer greetingRecv;
     private final ByteBuffer greetingSend;
 
@@ -122,6 +126,7 @@ public class StreamEngine implements IEngine, IPollEvents
     private Protocol zmtpVersion;
 
     //  The session this engine is attached to.
+    //  此 engine 附加的 session
     private SessionBase session;
 
     private final Options options;
@@ -464,10 +469,12 @@ public class StreamEngine implements IEngine, IPollEvents
         assert (!ioError);
 
         //  If write buffer is empty, try to read new data from the encoder.
+        //  如果 write buffer 是空的，尝试从 encoder 中获取新数据
         if (outsize == 0) {
             //  Even when we stop polling as soon as there is no
             //  data to send, the poller may invoke outEvent one
             //  more time due to 'speculative write' optimization.
+            //  即使当我们没有数据要发送就立即停止轮询时，由于“推测写入”的优化，轮询程序可能还会调用outEvent一次。
             if (encoder == null) {
                 assert (handshaking);
                 return;
@@ -499,6 +506,7 @@ public class StreamEngine implements IEngine, IPollEvents
 
             // slight difference with libzmq:
             // encoder is notified of the end of the loading
+            // 与libzmq略有不同：加载结束时通知编码器
             encoder.encoded();
         }
 
@@ -507,6 +515,9 @@ public class StreamEngine implements IEngine, IPollEvents
         //  arbitrarily large. However, we assume that underlying TCP layer has
         //  limited transmission buffer and thus the actual number of bytes
         //  written should be reasonably modest.
+        //  如果有任何数据要写入写缓冲区，请尽可能多地写入 socket。
+        //  注意，要写入的数据量可以任意大。
+        //  但是，我们假设底层TCP层的传输缓冲区有限，因此实际写入的字节数应合理。
         int nbytes = write(outpos.get());
 
         //  IO error has occurred. We stop waiting for output events.
@@ -605,6 +616,7 @@ public class StreamEngine implements IEngine, IPollEvents
     }
 
     //  Detects the protocol used by the peer.
+    //  检测对方使用的协议
     private boolean handshake()
     {
         assert (handshaking);
@@ -1237,6 +1249,8 @@ public class StreamEngine implements IEngine, IPollEvents
     //  Writes data to the socket. Returns the number of bytes actually
     //  written (even zero is to be considered to be a success). In case
     //  of error or orderly shutdown by the other peer -1 is returned.
+    //  将数据写入套接字。 返回实际写入的字节数（即使为零也被视为成功）。
+    //  如果发生错误或被其他对等有序关闭，则返回-1。
     private int write(ByteBuffer outbuf)
     {
         int nbytes;
@@ -1257,6 +1271,8 @@ public class StreamEngine implements IEngine, IPollEvents
     //  Reads data from the socket (up to 'size' bytes).
     //  Returns the number of bytes actually read or -1 on error.
     //  Zero indicates the peer has closed the connection.
+    //  从套接字读取数据（最大为“大小”字节）。
+    //  返回实际读取的字节数，如果出错则返回-1。 零表示对等方已关闭连接。
     private int read(ByteBuffer buf)
     {
         int nbytes;

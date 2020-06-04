@@ -16,6 +16,7 @@ public abstract class Own extends ZObject
 
     //  True if termination was already initiated. If so, we can destroy
     //  the object if there are no more child objects or pending term acks.
+    //  如果已经启动终止，则为True。 如果是这样，如果没有更多的子对象或待定的术语确认，我们可以销毁该对象。
     private boolean terminating;
 
     //  Sequence number of the last command sent to this object.
@@ -26,6 +27,7 @@ public abstract class Own extends ZObject
 
     //  Socket owning this object. It's responsible for shutting down
     //  this object.
+    //  拥有此对象的套接字。 它负责关闭该对象。
     private Own owner;
 
     //  List of all objects owned by this socket. We are responsible
@@ -43,6 +45,8 @@ public abstract class Own extends ZObject
 
     //  The object is not living within an I/O thread. It has it's own
     //  thread outside of 0MQ infrastructure.
+    //  请注意，在构造函数中未指定所有者。 稍后将在插入对象时提供该对象。该对象不在I / O线程中。
+    //  它在0MQ基础架构之外拥有自己的线程。
     protected Own(Ctx parent, int tid)
     {
         super(parent, tid);

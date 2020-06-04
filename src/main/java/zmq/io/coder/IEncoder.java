@@ -8,6 +8,7 @@ import zmq.util.ValueReference;
 public interface IEncoder
 {
     //  Load a new message into encoder.
+    //  加载消息进行编码
     void loadMsg(Msg msg);
 
     //  The function returns a batch of binary data. The data
